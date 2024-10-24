@@ -1,7 +1,7 @@
 ## Models
 
 ### Profile
-'''
+```
 public class Profile
 {
     [JsonPropertyName("name")]
@@ -39,4 +39,4 @@ public class Resolution
     [JsonPropertyName("height")]
     public int? Height { get; set; }
 }
-'''
+```
