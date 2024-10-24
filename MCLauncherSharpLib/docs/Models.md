@@ -1,7 +1,24 @@
 ## Models
 
 ### Profile
+
 ```csharp
+using MCLauncherSharpLib.Models.LauncherProfiles;
+```
+
+```csharp
+public class LauncherProfiles
+{
+    [JsonPropertyName("profiles")]
+    public Dictionary<string, Profile>? Profiles { get; set; }
+
+    [JsonPropertyName("settings")]
+    public Dictionary<string, JsonValue>? Settings { get; set; }
+
+    [JsonPropertyName("version")]
+    public int? Version { get; set; }
+}
+
 public class Profile
 {
     [JsonPropertyName("name")]
