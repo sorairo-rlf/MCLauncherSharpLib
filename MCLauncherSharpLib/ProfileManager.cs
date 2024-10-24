@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 using MCLauncherSharpLib.Models.LauncherProfiles;
@@ -34,6 +36,83 @@ namespace MCLauncherSharpLib
 
             WriteLauncherProfiles(ProfilesPath, profilesJsonText);
         }
+
+        public static void UpsertProfile(string id, Profile profile)
+        {
+            var profiles = LoadLauncherProfiles();
+            if (profiles.Profiles == null)
+            {
+                profiles.Profiles = new Dictionary<string, Profile>();
+            }
+
+            profiles.Profiles[id] = profile; // 存在すれば上書き、なければ追加
+            SaveLauncherProfiles(profiles);
+        }
+
+        public static void AddProfile(string id, Profile addProfile)
+        {
+            var profiles = LoadLauncherProfiles();
+            if (profiles.Profiles != null)
+                profiles.Profiles.Add(id, addProfile);
+            SaveLauncherProfiles(profiles);
+        }
+        public static void RemoveProfile(string id)
+        {
+            var profiles = LoadLauncherProfiles();
+            if (profiles.Profiles != null && profiles.Profiles.Remove(id))
+            {
+                SaveLauncherProfiles(profiles);
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Profile with key '{id}' does not exist.");
+            }
+        }
+        public static void ReplaceProfile(string id, Profile repProfile)
+        {
+            var profiles = LoadLauncherProfiles();
+            if (profiles.Profiles != null && profiles.Profiles.ContainsKey(id))
+            {
+                profiles.Profiles[id] = repProfile;
+                SaveLauncherProfiles(profiles);
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Profile with key '{id}' does not exist.");
+            }
+        }
+
+        public static void UpdateProfilesSettings(string key, object val)
+        {
+            var profiles = LoadLauncherProfiles();
+
+            if (profiles.Settings == null)
+            {
+                profiles.Settings = new Dictionary<string, JsonValue>();
+            }
+
+            if (val == null)
+            {
+                profiles.Settings.Remove(key);
+            }
+            else
+            {
+                profiles.Settings[key] = JsonValue.Create(val);
+            }
+
+            SaveLauncherProfiles(profiles);
+        }
+        public static object? GetProfileSetting(string key)
+        {
+            var profiles = LoadLauncherProfiles();
+            if (profiles.Settings != null && profiles.Settings.TryGetValue(key, out var value))
+            {
+                return value;
+            }
+
+            return null;
+        }
+
         private static string ReadLauncherProfiles(string profilePath)
         {
 
@@ -48,7 +127,7 @@ namespace MCLauncherSharpLib
         {
             if (!File.Exists(profilePath))
                 throw new FileNotFoundException($"プロファイルファイルが見つかりません: {profilePath}");
-            File.WriteAllText(ProfilesPath, profilesJsonText);
+            File.WriteAllText(profilePath, profilesJsonText);
             return;
         }
     }
