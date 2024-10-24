@@ -13,7 +13,7 @@ dotnet add package MCLauncherSharpLib
 ## Examples of Use
 
 ```csharp
-var profile = new Profile { Name = "MyProfile", Version = "1.19" };
+var profile = new Profile { Name = "MyProfile", LastVersionId = "1.19" };
 UpsertProfile("myProfileId", profile);
 ```
 
