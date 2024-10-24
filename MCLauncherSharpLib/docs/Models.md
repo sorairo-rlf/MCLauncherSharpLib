@@ -1,7 +1,7 @@
 ## Models
 
 ### Profile
-```
+```csharp
 public class Profile
 {
     [JsonPropertyName("name")]
