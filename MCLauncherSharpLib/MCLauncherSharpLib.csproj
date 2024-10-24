@@ -2,8 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageId>MCLauncherSharpLib</PackageId>
+	<Version>1.0.0</Version>
+	<Authors>sorairo-rlf</Authors>
+	<Description>A library for managing Minecraft profiles and settings.</Description>
+	<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	<RepositoryUrl>https://github.com/sorairo-rlf/MCLauncherSharpLib</RepositoryUrl>
+	<PackageTags>minecraft launcher profiles</PackageTags>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
 </Project>

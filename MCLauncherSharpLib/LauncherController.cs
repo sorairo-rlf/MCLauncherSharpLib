@@ -1,4 +1,6 @@
-﻿namespace MCLauncherSharpLib
+﻿using System;
+
+namespace MCLauncherSharpLib
 {
     public class LauncherController
     {
