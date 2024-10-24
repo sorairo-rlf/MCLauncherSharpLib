@@ -4,7 +4,7 @@ MCLauncherSharpLib is a library for managing Minecraft profiles and settings.
 
 ## Install
 
-NuGetパッケージマネージャを使用してインストールできます。
+It can be installed using the NuGet package manager.
 
 ```bash
 dotnet add package MCLauncherSharpLib
