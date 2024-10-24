@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageId>MCLauncherSharpLib</PackageId>
-	<Version>1.0.0</Version>
+	<Version>1.0.2</Version>
 	<Authors>sorairo-rlf</Authors>
 	<Description>A library for managing Minecraft profiles and settings.</Description>
 	<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -15,6 +15,6 @@
 	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 	<ItemGroup>
-		<None Include="docs\README.md" Pack="true" PackagePath="\"/>
+		<None Include="docs\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 </Project>

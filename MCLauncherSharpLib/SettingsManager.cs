@@ -13,23 +13,22 @@ namespace MCLauncherSharpLib
         private static readonly string SettingsPath = Path.Combine(MinecraftDataPath, "launcher_settings.json");
         public static Dictionary<string, JsonValue> LoadLauncherSettings()
         {
-            string profilesJsonText = ReadLauncherSettings(SettingsPath);
+            string settingsJsonText = ReadLauncherSettings(SettingsPath);
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-            return JsonSerializer.Deserialize<Dictionary<string, JsonValue>>(profilesJsonText, options)
+            return JsonSerializer.Deserialize<Dictionary<string, JsonValue>>(settingsJsonText, options)
                    ?? new Dictionary<string, JsonValue>();
         }
-        public static void SaveLauncherProfiles(Dictionary<string, JsonValue> launcherSettings)
+        public static void SaveLauncherSettings(Dictionary<string, JsonValue> launcherSettings)
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
 
-            // JSON形式にシリアライズ
             string settingsJsonText = JsonSerializer.Serialize(launcherSettings, options);
 
             WriteLauncherSettings(SettingsPath, settingsJsonText);
         }
 
-        public static void UpdateProfilesSettings(string key, object val)
+        public static void UpdateLauncherSettings(string key, object val)
         {
             var settings = LoadLauncherSettings();
 
@@ -47,9 +46,9 @@ namespace MCLauncherSharpLib
                 settings[key] = JsonValue.Create(val);
             }
 
-            SaveLauncherProfiles(settings);
+            SaveLauncherSettings(settings);
         }
-        public static object? GetProfileSetting(string key)
+        public static object? GetLauncherSetting(string key)
         {
             var settings = LoadLauncherSettings();
             if (settings != null && settings.TryGetValue(key, out var value))
@@ -64,16 +63,16 @@ namespace MCLauncherSharpLib
         {
 
             if (!File.Exists(settingsPath))
-                throw new FileNotFoundException($"プロファイルファイルが見つかりません: {settingsPath}");
+                throw new FileNotFoundException($"LauncherSettings file not found: {settingsPath}");
 
-            string profilesJsonText = File.ReadAllText(settingsPath);
-            return profilesJsonText;
+            string settingsJsonText = File.ReadAllText(settingsPath);
+            return settingsJsonText;
         }
 
         private static void WriteLauncherSettings(string settingsPath, string settingsJsonText)
         {
             if (!File.Exists(settingsPath))
-                throw new FileNotFoundException($"プロファイルファイルが見つかりません: {settingsPath}");
+                throw new FileNotFoundException($"LauncherSettings file not found: {settingsPath}");
             File.WriteAllText(settingsPath, settingsJsonText);
             return;
         }

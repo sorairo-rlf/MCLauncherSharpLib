@@ -27,10 +27,19 @@ namespace MCLauncherSharpLib
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
 
-            // JSON形式にシリアライズ
             string profilesJsonText = JsonSerializer.Serialize(launcherProfiles, options);
 
             WriteLauncherProfiles(ProfilesPath, profilesJsonText);
+        }
+
+        public static Dictionary<string, Profile> LoadProfiles()
+        {
+            var profiles = LoadLauncherProfiles();
+            if (profiles.Profiles == null)
+            {
+                profiles.Profiles = new Dictionary<string, Profile>();
+            }
+            return profiles.Profiles;
         }
 
         public static void UpsertProfile(string id, Profile profile)
@@ -41,7 +50,7 @@ namespace MCLauncherSharpLib
                 profiles.Profiles = new Dictionary<string, Profile>();
             }
 
-            profiles.Profiles[id] = profile; // 存在すれば上書き、なければ追加
+            profiles.Profiles[id] = profile;
             SaveLauncherProfiles(profiles);
         }
 
@@ -113,7 +122,7 @@ namespace MCLauncherSharpLib
         {
 
             if (!File.Exists(profilePath))
-                throw new FileNotFoundException($"プロファイルファイルが見つかりません: {profilePath}");
+                throw new FileNotFoundException($"Profile file not found: {profilePath}");
 
             string profilesJsonText = File.ReadAllText(profilePath);
             return profilesJsonText;
@@ -122,7 +131,7 @@ namespace MCLauncherSharpLib
         private static void WriteLauncherProfiles(string profilePath, string profilesJsonText)
         {
             if (!File.Exists(profilePath))
-                throw new FileNotFoundException($"プロファイルファイルが見つかりません: {profilePath}");
+                throw new FileNotFoundException($"Profile file not found: {profilePath}");
             File.WriteAllText(profilePath, profilesJsonText);
             return;
         }
