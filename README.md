@@ -13,3 +13,8 @@ It can be installed using the NuGet package manager.
 ```bash
 dotnet add package MCLauncherSharpLib
 ```
+## Prerequisites
+- .NET 8.0
+- Windows environment recommended
+## License
+[This project is licensed under the Apache License 2.0.](/LICENSE.txt)
