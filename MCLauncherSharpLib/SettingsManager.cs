@@ -28,35 +28,92 @@ namespace MCLauncherSharpLib
             WriteLauncherSettings(SettingsPath, settingsJsonText);
         }
 
-        public static void UpdateLauncherSettings(string key, object val)
+        public static JsonValue? GetSetting(string key)
         {
             var settings = LoadLauncherSettings();
-
-            if (settings == null)
+            if (settings != null)
             {
-                settings = new Dictionary<string, JsonValue>();
+                if (settings.ContainsKey(key))
+                {
+                    JsonValue getSetting = settings[key];
+                    return getSetting;
+                }
+                Console.WriteLine($"Error: No launcher setting found with the Key '{key}'.");
+                return null;
             }
-
-            if (val == null)
-            {
-                settings.Remove(key);
-            }
-            else
-            {
-                settings[key] = JsonValue.Create(val);
-            }
-
-            SaveLauncherSettings(settings);
-        }
-        public static object? GetLauncherSetting(string key)
-        {
-            var settings = LoadLauncherSettings();
-            if (settings != null && settings.TryGetValue(key, out var value))
-            {
-                return value;
-            }
-
+            Console.WriteLine("Error: Launcher settings are null.");
             return null;
+        }
+        public static bool AddSetting(string key, JsonValue addSetting)
+        {
+            var settings = LoadLauncherSettings();
+            if (settings == null)
+                settings = new Dictionary<string, JsonValue>();
+            if (settings.ContainsKey(key))
+            {
+                Console.WriteLine($"Error: No launcher setting found with the Key '{key}'.");
+                return false;
+            }
+            settings.Add(key, addSetting);
+            SaveLauncherSettings(settings);
+            return true;
+        }
+        public static bool UpsertSetting(string key, JsonValue upsSetting)
+        {
+            var settings = LoadLauncherSettings();
+            if (settings == null)
+                settings = new Dictionary<string, JsonValue>();
+            settings[key] = upsSetting;
+            SaveLauncherSettings(settings);
+            return true;
+        }
+        public static bool ReplaceSetting(string key, JsonValue repSetting)
+        {
+            var settings = LoadLauncherSettings();
+            if (settings != null)
+            {
+                if (settings.ContainsKey(key))
+                {
+                    settings[key] = repSetting;
+                    SaveLauncherSettings(settings);
+                }
+                Console.WriteLine($"Error: No launcher setting found with the Key '{key}'.");
+                return false;
+            }
+            Console.WriteLine("Error: Launcher settings are null.");
+            return false;
+        }
+        public static bool DeleteSetting(string key)
+        {
+            var settings = LoadLauncherSettings();
+            if (settings != null)
+            {
+                if (settings.ContainsKey(key))
+                {
+                    settings.Remove(key);
+                    SaveLauncherSettings(settings);
+                }
+                return true;
+            }
+            Console.WriteLine("Error: Launcher settings are null.");
+            return false;
+        }
+        public static bool RemoveSetting(string key)
+        {
+            var settings = LoadLauncherSettings();
+            if (settings != null)
+            {
+                if (settings.ContainsKey(key))
+                {
+                    settings.Remove(key);
+                    SaveLauncherSettings(settings);
+                    return true;
+                }
+                Console.WriteLine($"Error: No launcher setting found with the Key '{key}'.");
+                return false;
+            }
+            Console.WriteLine("Error: Launcher settings are null.");
+            return false;
         }
 
         private static string ReadLauncherSettings(string settingsPath)
@@ -68,7 +125,6 @@ namespace MCLauncherSharpLib
             string settingsJsonText = File.ReadAllText(settingsPath);
             return settingsJsonText;
         }
-
         private static void WriteLauncherSettings(string settingsPath, string settingsJsonText)
         {
             if (!File.Exists(settingsPath))

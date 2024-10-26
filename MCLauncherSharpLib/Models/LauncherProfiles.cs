@@ -5,17 +5,17 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
-namespace MCLauncherSharpLib.Models.LauncherProfiles
+namespace MCLauncherSharpLib.Models
 {
     public class LauncherProfiles
     {
         [JsonPropertyName("profiles")]
-        public Dictionary<string, Profile>? Profiles { get; set; }
+        public required Dictionary<string, Profile> Profiles { get; set; }
 
         [JsonPropertyName("settings")]
-        public Dictionary<string, JsonValue>? Settings { get; set; }
+        public required Dictionary<string, JsonValue> Settings { get; set; }
 
         [JsonPropertyName("version")]
-        public int? Version { get; set; }
+        public required int Version { get; set; }
     }
 }

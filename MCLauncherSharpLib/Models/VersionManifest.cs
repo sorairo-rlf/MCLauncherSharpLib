@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MCLauncherSharpLib.Models.MinecraftVersions
+namespace MCLauncherSharpLib.Models
 {
     public class VersionManifest
     {

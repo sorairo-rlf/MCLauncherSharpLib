@@ -1,4 +1,4 @@
-﻿using MCLauncherSharpLib.Models.MinecraftVersions;
+﻿using MCLauncherSharpLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MCLauncherSharpLib
 {
-    public class VersionManifestManager
+    public class MinecraftVersion
     {
         private static readonly string AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         private static readonly string MinecraftDataPath = Path.Combine(AppDataPath, ".minecraft");
@@ -22,7 +22,6 @@ namespace MCLauncherSharpLib
             return JsonSerializer.Deserialize<VersionManifest>(versionManifestJsonText, options)
                    ?? new VersionManifest();
         }
-
         public static void SaveVersionManifest(VersionManifest versionManifest)
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
@@ -31,36 +30,28 @@ namespace MCLauncherSharpLib
 
             WriteVersionManifest(VersionManifestPath, versionManifestJsonText);
         }
-
-        public static List<string> GetMinecraftVersionList()
+        public static List<string> GetVersionList()
         {
-            var versionManifest = LoadVersionManifest();
-
-            if (versionManifest == null || versionManifest.Versions == null)
-            {
+            var version_manifest = LoadVersionManifest();
+            if (version_manifest == null || version_manifest.Versions == null)
                 return new List<string>();
-            }
-
-            List<string> versionList = versionManifest.Versions.Select(version => version.Id).ToList();
-
+            List<string> versionList = version_manifest.Versions.Select(version => version.Id).ToList();
             return versionList;
         }
-
-        public static bool IsVersionExists(string versionId)
+        public static bool CheckVersion(string versionId)
         {
-            var versions = GetMinecraftVersionList();
+            var versions = GetVersionList();
             return versions.Contains(versionId);
         }
-
         public static string GetLatestVersion()
         {
-            var versionManifest = LoadVersionManifest();
-            return versionManifest?.Latest?.Release ?? "No release version found.";
+            var version_manifest = LoadVersionManifest();
+            return version_manifest?.Latest?.Release ?? "No release version found.";
         }
         public static string GetLatestSnapshot()
         {
-            var versionManifest = LoadVersionManifest();
-            return versionManifest?.Latest?.Snapshot ?? "No snapshot version found.";
+            var version_manifest = LoadVersionManifest();
+            return version_manifest?.Latest?.Snapshot ?? "No snapshot version found.";
         }
 
         private static string ReadVersionManifest(string versionManifestPath)
@@ -72,7 +63,6 @@ namespace MCLauncherSharpLib
             string versionManifestJsonText = File.ReadAllText(versionManifestPath);
             return versionManifestJsonText;
         }
-
         private static void WriteVersionManifest(string versionManifestPath, string versionManifestJsonText)
         {
             if (!File.Exists(versionManifestPath))

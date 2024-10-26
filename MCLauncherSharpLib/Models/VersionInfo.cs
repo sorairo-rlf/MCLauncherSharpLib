@@ -1,4 +1,4 @@
-﻿namespace MCLauncherSharpLib.Models.MinecraftVersions
+﻿namespace MCLauncherSharpLib.Models
 {
     public class VersionInfo
     {
